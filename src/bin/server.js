@@ -1,15 +1,28 @@
-const http = require('http');
+const http = require('http')
+const {app} = require('../middlewares')
 const {port} = require('../vars')
+var cluster = require('cluster')
 
-//server to handle HTTP requests
-let server = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
+const server = http.createServer(app) // including express middleware
+const numCPUs = require('os').cpus().length // cpu cores
 
-    res.end('Sample Donate Kart Server!\n');
-});
 
-server.listen(port,         
-    ()=>{
-        console.log(`Server started running on port ${port}`)
-    }
-);
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`)
+
+  //assigning workers for increasing request.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork()
+  }
+
+  cluster.on('exit', (worker) => {
+    console.log(`worker ${worker.process.pid} died`)
+  })
+} else {
+    //starting server
+    server.listen(port,
+        ()=>{
+            console.log(`Server started running on port ${port}`)
+        }
+    )
+}
