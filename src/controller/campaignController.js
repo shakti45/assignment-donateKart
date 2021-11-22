@@ -1,3 +1,4 @@
+let {campaignService} = require('../services')
 /*
 @param req accepts req
 @param res send status with response
@@ -6,7 +7,9 @@ get list of all campaigns irrespective of their status
 */
 let getAllCampaigns = async (req,res,next) => {
     try{
-        res.status(200).send('Donate Kart - All Campaigns')
+        let result = await campaignService.getAllCampaigns()
+        console.log(result)
+        res.send(result)
     } catch (err) {
         next(err)
     }
@@ -19,7 +22,7 @@ get list of all active campaigns
 */
 let getActiveCampaigns = async (req,res,next) => {
     try{
-        res.status(200).send('Donate Kart - Active campaigns')
+        res.send(campaignService.getActiveCampaigns())
     } catch (err) {
         next(err)
     }
@@ -32,7 +35,7 @@ get list of all closed campaigns
 */
 let getClosedCampaigns = async (req,res,next) => {
     try{
-        res.status(200).send('Donate Kart - Closed Campaigns')
+        res.status(200).send(campaignService.getClosedCampaigns())
     } catch (err) {
         next(err)
     }
