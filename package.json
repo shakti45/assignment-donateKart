@@ -1,0 +1,28 @@
+{
+  "name": "assignment-donatekart",
+  "version": "1.0.0",
+  "description": "traverse, read, filter, sort a test api by donateKart as a part of hiring assignment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/bin/server.js",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shakti45/assignment-donateKart.git"
+  },
+  "keywords": [
+    "filter",
+    "sort",
+    "api"
+  ],
+  "author": "Shakti Srivastava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shakti45/assignment-donateKart/issues"
+  },
+  "homepage": "https://github.com/shakti45/assignment-donateKart#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
+}
