@@ -1,3 +1,4 @@
+const {callExternalApi} = require('../helper/externalAPICallHelper')
 var arr = [
     {
       code: 'NCC',
@@ -64,14 +65,40 @@ var arr = [
     }
 ]
 let getAllCampaigns = async() => {
-
-    let res = arr.sort((a,b)=> b.totalAmount-a.totalAmount)
+    let data = Object.assign([],await callExternalApi('https://testapi.donatekart.com/api/campaign'))
+    let res = data.sort((a,b)=> b.totalAmount-a.totalAmount).map(item => {
+        return {
+            title:item.title,
+            totalAmount:item.totalAmount,
+            backersCount:item.backersCount,
+            endDate:item.endDate
+        }
+    })
     return res 
 }
 
-let getActiveCampaigns = async() => {return arr.filter(item => new Date(item.endDate) >= new Date())}
+let getActiveCampaigns = async() => {
+    let data = Object.assign([],await callExternalApi('https://testapi.donatekart.com/api/campaign'))
+    let res = data.filter(item => (new Date(item.endDate)>=new Date()))
+    .filter(item => (new Date(item.created)>= (new Date()-30)) && (new Date(item.created)>=new Date()))
+    .map(item => {
+        return {
+            title:item.title,
+            totalAmount:item.totalAmount,
+            backersCount:item.backersCount,
+            endDate:item.endDate,
+            diff: (new Date(item.created)>= (new Date()-30)) && (new Date(item.created)<=new Date())
+        }
+    })
+    console.log(res)
+    return res
+}
  
-let getClosedCampaigns = async() =>  {return arr.filter(item => new Date(item.endDate) <= new Date() || item.procuredAmount >= item.totalAmount )}
+let getClosedCampaigns = async() =>  {
+    let data = Object.assign([],await callExternalApi('https://testapi.donatekart.com/api/campaign'))
+    let res = data.filter(item => new Date(item.endDate) <= new Date() || item.procuredAmount >= item.totalAmount )
+    return res
+}
 
 module.exports = {
     getAllCampaigns,

@@ -8,7 +8,7 @@ get list of all campaigns irrespective of their status
 let getAllCampaigns = async (req,res,next) => {
     try{
         let result = await campaignService.getAllCampaigns()
-        console.log(result)
+        // console.log(result)
         res.send(result)
     } catch (err) {
         next(err)
@@ -22,7 +22,8 @@ get list of all active campaigns
 */
 let getActiveCampaigns = async (req,res,next) => {
     try{
-        res.send(campaignService.getActiveCampaigns())
+        let result = await campaignService.getActiveCampaigns() 
+        res.send(result)
     } catch (err) {
         next(err)
     }
@@ -35,7 +36,8 @@ get list of all closed campaigns
 */
 let getClosedCampaigns = async (req,res,next) => {
     try{
-        res.status(200).send(campaignService.getClosedCampaigns())
+        let result = await campaignService.getClosedCampaigns() 
+        res.send(result)
     } catch (err) {
         next(err)
     }
